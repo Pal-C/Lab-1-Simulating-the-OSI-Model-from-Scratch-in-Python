@@ -11,7 +11,6 @@ class Application_layer:    # Simulates the HTTP-like request-response communica
     
     def receive(self, request):     # Function that simulates the receiving of a request (here it just parses the JSON request and extracts the data (message))
         response = json.loads(request)  # loads the message / request from the JSON file  
-
         return response["message"]  
 
 class Presentation_layer:   # Simulates the encryption, compression, encoding, and vice versa of the 3 actions on parsed data
@@ -45,17 +44,19 @@ class Presentation_layer:   # Simulates the encryption, compression, encoding, a
 
     def decompress(self, data): # Function that decompresses run-length encoded data (basically undo-ing the compression process)
         decompressed = []
-        length = len(data)
 
+        length = len(data)
+        count = 0
         i = 0
         while i < length:
             char = data[i]
             if i + 1 < length:
-                count = int(data[i+1])
-            else:
-                count = 1
-            decompressed.append(char * count)
-            i += 2
+                if int(data[i+1]) != 4:
+                    decompressed.append(char)
+                i+=1
+
+            decompressed.append(char)
+            i += 1
 
         return "".join(decompressed)
 
@@ -131,14 +132,32 @@ class Physical_layer:   # Simulates bit-level transmission over a network (had a
         bits = "".join(format(ord(char), '08b') for char in data)   # Converts each character into an 8-bit binary
         self.sock.sendall(bits.encode())    # Sends the binary data over the network
 
-    def receive(self):  # Receives bits and converts them back to characters
-        bits = self.conn.recv(1024).decode()    # Receives binary data from the socket
-        data = "".join(chr(int(bits[i:i+8], 2)) for i in range(0, len(bits), 8))    # Converts binary back to text
+    def receive(self):
+        buffer = b""  # Use bytes to accumulate received data
 
+        while True:
+            chunk = self.conn.recv(1024)  # Read up to 1024 bytes
+            if not chunk:
+                break  # Stop reading if connection is closed
+            buffer += chunk  # Append received data
+
+            try:
+                # Attempt to decode JSON early (will fail if incomplete)
+                decoded = buffer.decode()
+                json.loads(decoded)  # Try parsing JSON
+                break  # If successful, we got the full message
+            except (UnicodeDecodeError, json.JSONDecodeError):
+                continue  # Keep reading if JSON is incomplete
+
+        # Convert bits back to characters
+        bits = buffer.decode()
+        data = "".join(chr(int(bits[i:i+8], 2)) for i in range(0, len(bits), 8))
         return data
+
 
     def close(self):
         self.sock.close()
+
 
 print("TESTING CLIENT")
 # Testing Client (Sender)
