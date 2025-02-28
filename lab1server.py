@@ -34,7 +34,7 @@ class Presentation_layer:   # Simulates the encryption, compression, encoding, a
 
         return "".join(compressed)
     
-    def encode(self, data,):    # Function that returns the data after encryption and compression... 'encoding' :D
+    def encode(self, data):    # Function that returns the data after encryption and compression... 'encoding' :D
         encrypted = self.encrypt(data)
 
         return self.compress(encrypted)
@@ -42,16 +42,14 @@ class Presentation_layer:   # Simulates the encryption, compression, encoding, a
     def decrypt(self, data, key = 5):   # Function that decrypts the data (basically undo-ing encryption)
         return "".join(chr(ord(char) ^ key) for char in data)
 
-    def decompress(self, data): # Function that decompresses run-length encoded data (basically undo-ing the compression process)
+    def decompress(self, data): # Function that decompresses run-length encoded data (basically undo-ing the compression process) supposedly--
         decompressed = []
 
         length = len(data)
         count = 0
         i = 0
-        print(data)
         while i < length:
             char = data[i]
-            print(char)
             if i + 1 < length:
                 if int(data[i+1]) != 4:
                     decompressed.append(char)
