@@ -2,6 +2,21 @@
 
 from main import Application_layer, Presentation_layer, Session_layer, Transport_layer, Network_layer, Datalink_layer, Physical_layer
 
+def get_ip():
+  s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+  try:
+    s.connect(("8.8.8.8", 80))
+    ip = s.getsockname()[0]
+  except Excception:
+    ip = "127.0.0.1"
+  finally:
+    s.close()
+  return IP
+
+def get_mac():
+  return ':'.join(f"{(uuid.getnode() >> i) & 0xFF:02X}" for i in range(0, 48, 8))
+
 print("TESTING CLIENT")
 # Testing Client (Sender)
 
@@ -10,9 +25,13 @@ app = Application_layer()
 pres = Presentation_layer()
 sess = Session_layer()
 trans = Transport_layer()
-net = Network_layer(ip_address="192.168.1.1")
-datalink = Datalink_layer(mac_address="00:1A:2B:3C:4D:5E")
-phys = Physical_layer(mode="client", host="localhost", port=1111)
+
+ipad = get_ip()
+mad = get_mac()
+
+net = Network_layer(ip_address=ipad)
+datalink = Datalink_layer(mac_address=mad)
+phys = Physical_layer(mode="client", host="", port=1111)
 
 # Message to send
 message = "Hello, OSI!"
