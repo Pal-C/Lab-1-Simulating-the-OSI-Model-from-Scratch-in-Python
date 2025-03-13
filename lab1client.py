@@ -2,20 +2,21 @@
 
 from main import Application_layer, Presentation_layer, Session_layer, Transport_layer, Network_layer, Datalink_layer, Physical_layer
 
-def get_ip():
-  s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+def get_ip():  # Function that 'gets' the IP of the client side for sending
+  s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # Creates a UDP socket
 
   try:
-    s.connect(("8.8.8.8", 80))
-    ip = s.getsockname()[0]
+    s.connect(("8.8.8.8", 80))  # Connect to an external server
+    ip = s.getsockname()[0]    # Gets the IP address assigned to this client (connection)
   except Excception:
-    ip = "127.0.0.1"
+    ip = "127.0.0.1"  # If there's an error, default to localhost
   finally:
     s.close()
   return IP
 
-def get_mac():
-  return ':'.join(f"{(uuid.getnode() >> i) & 0xFF:02X}" for i in range(0, 48, 8))
+def get_mac():  # Function that 'gets' the MAC address of the client side
+  return ':'.join(f"{(uuid.getnode() >> i) & 0xFF:02X}" for i in range(0, 48, 8))  # Uses uuid.getnode() to get the MAC address and 
+                                                                                   # converts it to a readable format :D
 
 print("TESTING CLIENT")
 # Testing Client (Sender)
