@@ -34,7 +34,7 @@ class Presentation_layer:   # Simulates the encryption, compression, encoding, a
 
         return "".join(compressed)
     
-    def encode(self, data,):    # Function that returns the data after encryption and compression... 'encoding' :D
+    def encode(self, data):    # Function that returns the data after encryption and compression... 'encoding' :D
         encrypted = self.encrypt(data)
 
         return self.compress(encrypted)
@@ -115,7 +115,7 @@ class Datalink_layer:   # Simulates MAC addressing and frame transmission
 class Physical_layer:   # Simulates bit-level transmission over a network (had a lot of help from the net with this part-)
     def __init__(self, mode, host, port = 1111):    
         self.mode = mode    # Initializes the mode (server or client)
-        self.host = "local" # Defines the host address (make it host for now)
+        self.host = host # Defines the host address (make it host for now)
         self.port = port    # Initializes the port number
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # Creates the TCP socket
         
