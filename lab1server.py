@@ -11,9 +11,9 @@ app = Application_layer()
 pres = Presentation_layer()
 sess = Session_layer()
 trans = Transport_layer()
-net = Network_layer(ip_address="192.168.1.1")
-datalink = Datalink_layer(mac_address="00:1A:2B:3C:4D:5E")
-phys = Physical_layer(mode="server", host="localhost", port=1111)
+net = Network_layer(ip_address="")  # To be honest I'm not sure what values to put here-
+datalink = Datalink_layer(mac_address="")
+phys = Physical_layer(mode="server", host="127.0.0.1", port=1111)
 
 print("\n[Server] Ready to receive data...")
 
