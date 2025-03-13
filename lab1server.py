@@ -23,10 +23,10 @@ print(f"\n[Physical Layer] Received bits: {data}")
 
 # Process through OSI layers (Bottom to Top)
 data = datalink.receive(data)
-print(f"[Data Link Layer] Frame extracted: {data}")
+print(f"[Data Link Layer] Frame extracted (MAC: {datalink.mac_address}): {data}")
 
 data = net.receive(data)
-print(f"[Network Layer] Packet extracted: {data}")
+print(f"[Network Layer] Packet extracted (IP: {net.ip_address}): {data}")
 
 data = trans.receive(data)
 print(f"[Transport Layer] Segment extracted: {data}")
