@@ -94,6 +94,7 @@ class Network_layer:    # Simulates IP adressing and packet routing
     
     def receive(self, data):    # Function that loads the packet and extracts the data
         packet = json.loads(data)
+        self.ip_address = packet["IP"]
 
         return packet["data"]
 
@@ -109,6 +110,7 @@ class Datalink_layer:   # Simulates MAC addressing and frame transmission
     
     def receive(self, data):    # Function that loads the fram and extracts the data
         frame = json.loads(data)
+        self.mac_address = frame["mac"]
 
         return frame["data"]
 
