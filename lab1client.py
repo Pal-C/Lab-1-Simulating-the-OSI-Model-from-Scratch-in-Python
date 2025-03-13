@@ -1,5 +1,6 @@
 # Lab 1: Simulating the OSI Model from Scratch in Python
-
+import uuid
+import socket
 from main import Application_layer, Presentation_layer, Session_layer, Transport_layer, Network_layer, Datalink_layer, Physical_layer
 
 def get_ip():  # Function that 'gets' the IP of the client side for sending
