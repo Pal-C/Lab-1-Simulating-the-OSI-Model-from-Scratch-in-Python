@@ -1,6 +1,8 @@
 **How to run:**
 
 1. Open two terminals
-2. Run lab1server.py in one terminal first
-3. Run lab1client.py in the other terminal after
+   - In VS Code, click New Terminal and afterwards click Split Terminal
+2. In the first terminal run: python lab1server.py 
+3. On the second terminal run: python lab1client.py
+
 (An output should be printed afterward-)
