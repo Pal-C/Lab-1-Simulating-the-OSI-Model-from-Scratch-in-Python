@@ -2,7 +2,8 @@
 
 import socket
 import json
-import uuid
+import re
+import subprocess
 
 class Application_layer:    # Simulates the HTTP-like request-response communication
     def send(self, message):    # Function that simulates the sending of data (messages) as a request
@@ -100,7 +101,7 @@ class Network_layer:    # Simulates IP adressing and packet routing
 
 class Datalink_layer:   # Simulates MAC addressing and frame transmission
     def __init__(self, mac_address):    # Initializes the mac address
-        self.mac_address = mac_address  
+        self.mac_address = mac_address
 
     def send(self, data):   # Function that wraps data in a frame and stores it into JSON format
         frame = {"mac": self.mac_address, "data": data}
@@ -152,8 +153,13 @@ def get_ip():
         s.close()
     return ip
 
+
 def get_mac():
-    return ':'.join(f"{(uuid.getnode() >> i) & 0xFF:02X}" for i in range(0, 48, 8))
+    output = subprocess.run(["getmac"], capture_output=True, text=True).stdout
+    match = re.search(r"([0-9A-Fa-f]{2}[-]){5}([0-9A-Fa-f]{2})", output)
+
+    return match.group(0).upper().replace(":", "-") if match else None
+
 
 print("TESTING CLIENT")
 # Testing Client (Sender)
